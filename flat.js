@@ -1,6 +1,9 @@
-const flat = (arr) => {
+const flat = (arr,depth=1) => {
   return arr.reduce(
-    (pre, cur) => pre.concat(Array.isArray(cur) ? flat(cur) : cur),
+    (pre, cur) => {
+		if(Array.isArray(cur)&&depth>0)
+		return pre.concat( flat(cur,depth-1) )
+		else return pre.concat( cur )},
     []
   );
 };
