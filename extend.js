@@ -7,7 +7,7 @@ Children.prototype = new Parent();
 let a = new Children();
 
 //构造函数
-function Parent() {
+function Parent1() {
   this.name = "parent";
 }
 function Children1() {
