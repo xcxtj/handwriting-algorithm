@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <textarea name="" id="textarea"></textarea>
+    <input
+      id="input"
+      type="text"
+      style="border: 1px solid #cbd5e0; min-width: 80px; padding: 10px"
+    />
+
+    <script>
+      //textarea自适应高度
+      document.addEventListener("DOMContentLoaded", () => {
+        const textareael = document.getElementById("textarea");
+        textareael.addEventListener("input", () => {
+          textareael.style.height = "auto";
+          textareael.style.height = textareael.scrollHeight + "px";
+        });
+      });
+      //input自适应宽度
+      document.addEventListener("DOMContentLoaded", () => {
+        const inputel = document.getElementById("input");
+        inputel.addEventListener("input", () => {
+          inputel.style.width = "auto";
+          inputel.style.width = inputel.scrollWidth + "px";
+        });
+      });
+    </script>
+  </body>
+</html>

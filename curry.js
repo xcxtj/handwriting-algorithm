@@ -1,11 +1,10 @@
-function curry(fn) {
-  let length = fn.length;
-  return function _curry(...args) {
-    if (args.length < length) { // 判断接受的参数是否小于函数的参数长度
-      return function () {// 参数不够长度，再次接受传递参数
-        return _curry(...args, ...arguments);
-      };
-    } else return fn(...args);// 不要求改变this,
+function curry(fn, ...args) {
+  return function _curry(..._args) {
+    _args = [...args, ..._args]; //合并成一个新的参数数组
+    if (_args.length >= fn.length) {
+      // 判断接受的参数是否大于函数的参数长度
+      return fn(..._args);
+    } else return curry(fn, ..._args);// 参数不够长度，再次接受传递参数
   };
 }
 function sum(a, b, c) {
