@@ -9,10 +9,11 @@ Function.prototype.myBind = function (context) {
   //外部保存一个对原函数的引用。
   let fn = this;
   // 返回一个新的函数
-  return function Fn() {
+  return function newFn() {
     // 在新函数中调用原函数，并将 context 作为 this 上下文
     return fn.apply(
-      this instanceof Fn ? this : context,
+      //需要判断函数作为构造函数的情况，这个时候需要传入当前函数的 this 给 apply 调用，其余情况都传入指定的上下文对象
+      this instanceof newFn ? this : context,
       //新函数接受任意数量的参数，并将这些参数与 args 合并
       args.concat(...arguments)
     );
@@ -29,11 +30,12 @@ Function.prototype.myCall = function (context) {
   // 判断 context 是否传入，如果未传入则设置为 window
   context = context || window;
   //在 context 对象上添加一个方法 fn
-  context.fn = this;
+  const key = Symbol();
+  context[key] = this;
   //将 args 作为参数传递
-  result = context.fn(...args);
+  result = context[key](...args);
   //删除 context 对象上的 fn 属性
-  delete context.fn;
+  delete context[key];
   return result;
 };
 Function.prototype.myApply = function (context) {
@@ -45,12 +47,13 @@ Function.prototype.myApply = function (context) {
   // 判断 context 是否传入，如果未传入则设置为 window
   context = context || window;
   //在 context 对象上添加一个方法 fn
-  context.fn = this;
+  const key = Symbol();
+  context[key] = this;
   if (arguments[1]) {
     //存在args
-    result = context.fn(...arguments[1]);
-  } else result = context.fn(); //不存在，不传递任何参数
+    result = context[key](...arguments[1]);
+  } else result = context[key](); //不存在，不传递任何参数
   //删除 context 对象上的 fn 属性
-  delete context.fn;
+  delete context[key];
   return result;
 };

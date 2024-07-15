@@ -4,13 +4,15 @@ map set无序
 
 Math.max可传多个参数
 
-Number.EPSILON 2的-52
+Number.EPSILON 2的-52，比较：
+
+Number.EPSILON-(0.1+0.2-0.3)<Number.EPSILON
 
 typeof null是object，nan是number
 
-false  undefined，null,0，0+，0-，nan，''
+false：  undefined，null,0，0+，0-，nan，''
 
-Object.is()在===上优化，-0 和 +0 不再相等，两个 NaN 是相等的
+Object.is(a,b)在===上优化，-0 和 +0 不再相等，两个 NaN 是相等的
 
 .map:filter:slice concat flat返回新数组
 
@@ -28,7 +30,7 @@ Object.is()在===上优化，-0 和 +0 不再相等，两个 NaN 是相等的
 
 将变量封装在函数内部，避免全局污染，保护变量不被外部访问和修改。延长变量生命周期。可以创建私有变量和私有方法，实现模块化的封装和隐藏。
 
-变量无法被垃圾回收，内存泄漏，性能
+变量无法被垃圾回收，内存泄漏（一块被分配的内存既不能使用,又不能回收,直到浏览器进程结束，造成系统内存占用越来越大,最终导致程序运行缓慢甚至系统崩溃等严重后果），性能，常驻内存,增大内存使用量
 
 - **特性**：
 
@@ -48,6 +50,40 @@ return count++
 }
 })()
 ```
+
+内存泄漏 performance查看，下降高度不同
+
+1不再需要闭包时，手动将引用置为null
+
+```js
+const myClosure = createClosure();
+// 使用后清理
+myClosure();
+myClosure = null;
+```
+
+2引用的外部变量是对象，可以使用WeakMap或WeakSet来存储对象的引用。WeakMap和WeakSet是弱引用的集合，当对象没有其他引用时，垃圾回收机制会自动回收对象。
+
+```js
+ weakMap.set(obj, 'cached data');
+    return function getData() {
+        return weakMap.get(obj);
+    };
+```
+
+3避免循环引用：内部引用外部，外部引内部
+
+```js
+const button = document.getElementById('myButton');
+    function handleClick() {
+        console.log('Button clicked!');
+        // 清理工作，解除引用
+        button.removeEventListener('click', handleClick);
+    }
+    button.addEventListener('click', handleClick);
+```
+
+4将闭包封装在立即执行函数中，当立即执行函数执行完毕后，其中的变量就会被销毁。(function() { ... })()或(function() { ... }())
 
 
 
@@ -85,11 +121,11 @@ yield
 }
 ```
 
-# 6for
+# 6for hand
 
-for in遍历对象的所有可枚举属性Key,遍历整个原型链上
-for in无法遍历「稀疏」数组 arr=[,,2]//只有2 //of会输出undefined
-for of遍历iterable对象的值（要有迭代器，Object.entries()）
+for in遍历对象的所有可枚举属性Key,遍历整个原型链上，输出下标
+for in无法遍历「稀疏」数组 arr=[,,2]//只有2                     //of会输出undefined
+for of遍历iterable对象的值（要有迭代器，Object.entries()）输出值
 
 # 7|| &&
 
@@ -107,24 +143,28 @@ let const 解构 模板字符串  字符串（includes startswith endswith repea
 
 JS代码执行之前，会进行语法检查和预编译，并且这一操作只进行一次。为了提高性能
 
-
-
-
-
-
-
 # 10ajax hand
 
-创建交互式[网页](https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/%E7%BD%91%E9%A1%B5)应用的网页开发技术。它是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术
+创建交互式网页应用的网页开发技术。它是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术
 
-fetch **原生js，没有使用XMLHttpRequest对象**。基于promise
+fetch **原生js，没有使用XMLHttpRequest对象**。基于promise。400 500都当成功不会reject，不带cookie，fetch(url, {credentials: 'include'})
 
 # 
 
 
 
-# map weakmap
+# 11map weakmap
 
-map本质上就是键值对的集合，但是普通的Object中的键值对中的键只能是字符串.map的键不限制范围，可以是任意类型.keys(),values,entries
+map本质上就是键值对的集合，但是普通的Object中的键值对中的键只能是字符串。map的键不限制范围，可以是任意类型.keys(),values,entries
 
 WeakMap 键是弱引用的。**其键必须是对象**。一旦不再被引用，WeakMap 里面的**键名对象和所对应的键值对会自动消失，不用手动删除引用**，不计入垃圾回收机制
+
+
+
+# 题
+
+利用1到7（x）的随机数生成1到10的随机数，等概率
+
+ran-1得到0-6(x)，再×7(x)得到0,7,14,21,28,35,42等概率，每个加上ran得到0-49(x2)等概率，
+
+只考虑if(n<40)时，%10+1就可以了

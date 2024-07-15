@@ -7,7 +7,7 @@ function bubble(arr) {
         flag = true;
       }
     }
-    if (flag) break;
+    if (!flag) break;
   }
   return arr;
 }
@@ -34,12 +34,12 @@ function qsort(arr) {
   partition(0, arr.length - 1, arr);
   return arr;
 }
-//简单版 需要arr=qsort
+//简单版 结果arr=qsort(arr)
 function qsort(arr) {
   if (arr.length <= 1) return arr;
   let left = [],
     right = [],
-    pivot = arr[0];//也可以优化
+    pivot = arr[0]; //也可以优化
   for (let i = 1; i < arr.length; i++) {
     if (arr[i] < pivot) left.push(arr[i]);
     else right.push(arr[i]);

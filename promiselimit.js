@@ -18,6 +18,7 @@ class Schedule {
       .shift()() // 从队列中取出任务并执行
       .then(() => {
         this.runcount--; // 任务执行完成后，当前运行的任务数减1
+        //if判断
         this.request(); // 继续请求任务
       });
   }

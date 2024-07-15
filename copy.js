@@ -10,3 +10,5 @@ function copy(obj) {
   }
   return newobj;
 }
+Object.assign//只对对象最外层
+JSON.parse(JSON.stringify())

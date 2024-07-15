@@ -16,6 +16,7 @@ function fn() {
 }
 fn(); //可以加上防抖
 //2
+// IntersectionObserverapi是异步的，不随目标元素的滚动同步触发，性能消耗小
 import { useIntersectionObserver } from "@vueuse/core";
 export const lazyPlugin = {
   install(app) {

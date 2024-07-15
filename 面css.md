@@ -1,4 +1,4 @@
-外部引用CSS link 页面载入时同时加载 @import页面网页完全载入以后加载,只能加载css，兼容
+外部引用CSS  link 页面载入时同时加载  @import页面网页完全载入以后加载,只能加载css，兼容
 
 # 1 z-index什么情况下会失效？
 
@@ -10,11 +10,11 @@
 
 三角 宽高为0，给三个方向相同border值和solid，一个有颜色两个transparent
 
-扇形 宽高为0，给border值solid transparent，给border-radius，一个方向的border颜色
+扇形 宽高为0，给border值solid transparent  给border-radius，一个方向的border颜色
 
 # 3动画
 
-js的`setTimeout` 和 `setInterval` 两个 API 设定的时间和浏览器有偏差，无法与浏览器的绘制帧保持同步。 **与浏览器的绘制帧同步** 的原生 API `requestAnimationFrame`取代
+js的`setTimeout` 和 `setInterval` 两个 API 设定的时间和浏览器有偏差，无法与浏览器的绘制帧保持同步。宏任务放入异步队列，执行时间更晚。最小化未激活时没必要渲染，节流，减少dom操作 **与浏览器的绘制帧同步** 的原生 API `requestAnimationFrame`取代
 
 
 
@@ -58,7 +58,7 @@ ie/怪异box-sizing: border-box
 
 # 7c3
 
-新选择器 :not(.input) border-radius text-shadow text-decoration transform gradient
+新选择器 :not(.input) border-radius text-shadow text-decoration transform gradient animation
 
 # 8预处理器
 
@@ -85,10 +85,9 @@ $blue: #1875e7
 ```
 
 - css-loader：导入 CSS 模块，对 CSS 代码进行编译处理；
-
 - style-loader：创建style标签，把 CSS 内容写入标签。
 
-- # 9可视区域（懒加载） hand
+# 9可视区域（懒加载） hand
 
 ```
 img.offsetTop < window.innerHeight + document.body.scrollTop;
@@ -115,12 +114,16 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 
 ```
 圣杯
-父padding左右和左右宽一样 overflow  三栏左浮动 中width100% 左relative marginleft-100% left为-自己宽  右relative maginleft-自己 right-自己
+！！！html中标签顺序中左右
+父padding左右和左右宽一样 overflow  三栏左浮动 
+中width100% 左relative marginleft-100% left为-自己宽  
+右relative maginleft-自己 right-自己
 ```
 
 ```
 双飞翼（center里面的中）
-父overflow 三栏（左右center ）左浮动 center的width100% 中 margin左右和左右宽相同  左marginleft-100% 右marginleft-自己  
+父overflow 三栏（左右center ）左浮动 center的width100% 
+中margin左右和左右宽相同  左marginleft-100% 右marginleft-自己  
 ```
 
 # 12居中
@@ -135,7 +138,7 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 
 flex默认0 1 auto
 
-flex：1 1 1 0
+flex：1; 1 1 0
 
 # 14float
 
@@ -170,3 +173,21 @@ flex：1 1 1 0
 # 16定位
 
 relative相对自身，absolute相对最近定位祖先，fixed window，sticky（relative和fixed之间）
+
+
+
+
+
+
+
+# SCSS
+
+$变量
+
+@mixin a($rad){}定义
+
+@include a() 使用
+
+@extend 继承
+
+@if a>b{}  @else

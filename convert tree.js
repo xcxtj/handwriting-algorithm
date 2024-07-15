@@ -1,6 +1,7 @@
 function converttree(data) {
   let map = new Map(),
     tree = []; // 存储树形结构的数组 使用Map来存储节点及其子节点的关系
+  for (let i of data) map.set(i.id, i); // 第一次遍历：创建所有节点的映射
   for (let i = 0; i < data.length; i++) {
     let pid = data[i].pid;
     if (map.has(pid)) {
@@ -21,14 +22,54 @@ function converttree(data) {
 }
 
 let data = [
-  { id: 1, pid: 0, name: "中国" }, // 数据数组，包含对象，表示id、父id和名称
-  { id: 2, pid: 0, name: "巴铁" },
-  { id: 3, pid: 1, name: "日本" },
-  { id: 4, pid: 2, name: "美国" },
-  { id: 5, pid: 2, name: "俄罗斯" },
-  { id: 6, pid: 13, name: "乌克兰" }, // 注意：此处pid为13，没有对应的父节点
-  { id: 7, pid: 3, name: "英国" },
-  { id: 8, pid: 7, name: "意大利" },
-  { id: 9, pid: 7, name: "西班牙" },
+  { id: 3, pid: 1, name: "樱桃" },
+  { id: 1, pid: 0, name: "西瓜" },
+  { id: 2, pid: 0, name: "芒果" },
+  { id: 4, pid: 2, name: "苹果" },
+  { id: 5, pid: 2, name: "猕猴桃" },
+  { id: 6, pid: 13, name: "草莓" },
+  { id: 7, pid: 3, name: "香蕉" },
+  { id: 8, pid: 7, name: "橙子" },
+  { id: 9, pid: 7, name: "葡萄" },
+];
+const list = [
+  {
+    id: 19,
+    pid: 0,
+  },
+  {
+    id: 14,
+    pid: 16,
+  },
+  {
+    id: 17,
+    pid: 14,
+  },
+  {
+    id: 16,
+    pid: 0,
+  },
 ];
 console.log(converttree(data));
+console.log(converttree(list));
+const arr = [{
+  id: 0,
+  data: 1,
+}, {
+  pid: 0,
+  id: 1,
+  data: 2,
+}, {
+  pid: 0,
+  id: 2,
+  data: 3,
+}, {
+  pid: 2,
+  id: 3,
+  data: 4,
+}, {
+  pid: 3,
+  id: 4,
+  data: 5,
+}]
+console.log(converttree(arr));
