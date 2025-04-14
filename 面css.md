@@ -40,7 +40,7 @@ transform:translate
 
 !important>内联>id>类 伪类 属性>标签 伪元素
 
-伪类:hover :focus :nth-child(n) 伪元素::before  ::after  属性[type='radio']
+伪类:hover :focus :nth-child(n) 伪元素::before  ::after  属性[type='radio'] [href=xxx]
 
 # 5隐藏元素
 
@@ -136,13 +136,13 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 
 # 13flex
 
-flex默认0 1 auto
+flex默认0 1 auto:初始大小基于其内容或宽高
 
-flex：1; 1 1 0
+flex：1; 1 1 0:初始主轴尺寸为 0
 
 # 14float
 
-控制元素在水平方向上的布局和定位。它使元素能够向左或向右浮动，并允许其他内容环绕它   文字环绕图片
+控制元素在水平方向上的布局和定位。脱离标准文档流，它使元素能够向左或向右浮动，并允许其他内容环绕它   文字环绕图片
 
 父容器的高度塌陷 清除浮动
 
@@ -174,7 +174,9 @@ flex：1; 1 1 0
 
 relative相对自身，absolute相对最近定位祖先，fixed window，sticky（relative和fixed之间）
 
+# 17文档流
 
+CSS 的文档流（Document Flow）是指文档中元素按照其在 HTML 中出现的顺序自上而下布局的方式，也称为常规流（Normal Flow）或默认流。文档流定义了元素的布局顺序和定位方式，包括元素的位置、大小、间距等属性。
 
 
 

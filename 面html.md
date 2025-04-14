@@ -8,7 +8,7 @@
 
 进度条 progress 
 
-dom查询 querySelector querySelectorAll
+dom查询 querySelector querySelectorAll集合
 
 web存储 storage
 
