@@ -16,7 +16,7 @@ Object.is(a,b)在===上优化，-0 和 +0 不再相等，两个 NaN 是相等的
 
 .map:filter:slice concat flat返回新数组
 
-对象的取值.和[]都可以，例外特殊关键字如class或＄{}不能用.
+对象的取值.和[]都可以，例外特殊关键字如class或＄{}不能用 .
 
 # 1拷贝
 
@@ -40,6 +40,16 @@ Object.is(a,b)在===上优化，-0 和 +0 不再相等，两个 NaN 是相等的
 4. **返回函数**：闭包通常以函数的形式返回，使得外部函数的变量仍然可以被内部函数引用和使用
 
 场景 节流防抖，自执行函数，柯里化，链式调用（封装计算器），（？函数里面定义函数）
+
+for (var i = 1; i <= 5; i++) {
+  (function(j) {
+    setTimeout(function timer() {
+      console.log(j)
+    }, j * 1000)
+  })(i)
+}
+
+function包起来，内部为新参数，立即执行，可以正常输出。之前为5个6
 
 ```js
 //计数器
@@ -149,7 +159,7 @@ JS代码执行之前，会进行语法检查和预编译，并且这一操作只
 
 创建交互式网页应用的网页开发技术。它是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术
 
-fetch **原生js，没有使用XMLHttpRequest对象**。基于promise。400 500都当成功不会reject，不带cookie，fetch(url, {credentials: 'include'}) 需要先then(r=>r.json()).then()
+fetch **原生js，没有使用XMLHttpRequest对象**。基于promise。400 500都当作成功不会reject，不带cookie，fetch(url, {credentials: 'include'}) 需要先then(r=>r.json()).then()
 
 # 
 
@@ -170,6 +180,38 @@ WeakMap 键是弱引用的。**其键必须是对象**。一旦不再被引用�
 # promise
 
 allsetteled，any
+
+
+
+try catch不能异步捕获错误，采用settimeout,promise链等
+
+foreach不会等待异步结束，用for
+
+# jsbridge
+
+ 使原生代码能和嵌入到webview的js相互调用通信
+
+# 数据防篡改 
+
+object.freeze不能新增修改删除，深层嵌套，seal只是可以修改，不会深层，proxy set里面抛error
+
+
+
+封装 class类里面可以private public
+
+继承 extends
+
+多态 方法重写，不同对象调用不同结果
+
+## 设计模式
+
+单例模式 vuex 一个store 以及pinia直接默认调用  进程中只有一个实例
+
+观察者 watch 定义对象间的一对多依赖关系，当一个对象状态变化时，自动通知所有依赖它的对象。
+
+代理模式 proxy控制访问  通过代理对象控制对原始对象的访问，增强其功能。
+
+依赖注入模式 provide inject  高层模块不依赖低层模块的具体实现，而是通过抽象接口传递依赖。
 
 # 题
 

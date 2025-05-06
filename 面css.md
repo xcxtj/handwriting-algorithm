@@ -1,20 +1,48 @@
 外部引用CSS  link 页面载入时同时加载  @import页面网页完全载入以后加载,只能加载css，兼容
 
+alt属性用于image失败后替换
+
+rem相对于根元素（\<html>）
+
+margin 设置 {全部} {上下，左右} {上，左右，下} {上，右，下，左}
+
 # 1 z-index什么情况下会失效？
 
-元素position不为非static，开启了浮动，父元素为relative，父元素的层叠优先级比其他元素低
+元素position不是非static，开启了浮动，父元素为relative，父元素的层叠优先级比其他元素低
 
 ![image-20240517142414774](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240517142414774.png)
 
 # 2 画三角形，扇形
 
-三角 宽高为0，给三个方向相同border值和solid，一个有颜色两个transparent
+三角 宽高为0，给三个方向相同border值和solid，一个有颜色两个transparent。（先整体赋值，最后给一个颜色也行）
 
-扇形 宽高为0，给border值solid transparent  给border-radius，一个方向的border颜色
+```css
+div {
+    width: 0;
+    height: 0;
+    border-top: 50px solid red;
+    border-right: 50px solid transparent;
+    border-left: 50px solid transparent;
+}
+```
+
+扇形 宽高为0，都给border值 solid transparent  都给border-radius，一个方向的border颜色
+
+```css
+div{
+    border: 100px solid transparent;
+    width: 0;
+    height: 0;
+    border-radius: 100px;
+    border-top-color: red;
+}
+```
+
+
 
 # 3动画
 
-js的`setTimeout` 和 `setInterval` 两个 API 设定的时间和浏览器有偏差，无法与浏览器的绘制帧保持同步。宏任务放入异步队列，执行时间更晚。最小化未激活时没必要渲染，节流，减少dom操作 **与浏览器的绘制帧同步** 的原生 API `requestAnimationFrame`取代
+js的`setTimeout` 和 `setInterval` 两个 API 设定的时间和浏览器有偏差，无法与浏览器的绘制帧保持同步。宏任务放入异步队列，执行时间更晚。页面最小化未激活时没必要渲染，节流，减少dom操作 **与浏览器的绘制帧同步** 的原生 API `requestAnimationFrame`取代
 
 
 
@@ -97,9 +125,9 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 
 ```
 1 左float left,设置width 右的marginleft为width，宽auto
-2左float left,设置width 右bfc（overflow）
-3左设置width 右flex1
-4父亲relative 左absolute 设置width 右的marginleft为width
+2 左float left,设置width 右bfc（overflow）
+3 父flex 左设置width 右flex1
+4 父亲relative 左absolute 设置width 右的marginleft为width
 ```
 
 # 11三栏 
@@ -116,14 +144,15 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 圣杯
 ！！！html中标签顺序中左右
 父padding左右和左右宽一样 overflow  三栏左浮动 
-中width100% 左relative marginleft-100% left为-自己宽  
-右relative maginleft-自己 right-自己
+中width100% 
+左relative marginleft-100% left为-自己宽  
+右relative maginleft-自己（-100%也可以？） right-自己
 ```
 
 ```
-双飞翼（center里面的中）
+双飞翼（center里面是中）
 父overflow 三栏（左右center ）左浮动 center的width100% 
-中margin左右和左右宽相同  左marginleft-100% 右marginleft-自己  
+中margin左右和左右宽相同  左marginleft-100%  右marginleft-自己  
 ```
 
 # 12居中
@@ -131,12 +160,12 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 ```
 1absolute l50% r50% transform:translate(-50%,-50%)
 2absolute lrtb都0 margin auto
-3flex align items和justify content center
+3flex align-items和justify-content center
 ```
 
 # 13flex
 
-flex默认0 1 auto:初始大小基于其内容或宽高
+flex默认0 1 auto 放大，缩小，auto:初始大小基于其内容或宽高
 
 flex：1; 1 1 0:初始主轴尺寸为 0
 
@@ -177,6 +206,10 @@ relative相对自身，absolute相对最近定位祖先，fixed window，sticky�
 # 17文档流
 
 CSS 的文档流（Document Flow）是指文档中元素按照其在 HTML 中出现的顺序自上而下布局的方式，也称为常规流（Normal Flow）或默认流。文档流定义了元素的布局顺序和定位方式，包括元素的位置、大小、间距等属性。
+
+# 深色模式
+
+document.body.classlist.add("darkmode)
 
 
 

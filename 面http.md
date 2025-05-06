@@ -14,9 +14,9 @@
 
 资源过期了，发现响应头中具有 Last-Modified 声明，则再次发起请求的时候带上 If-Modified-Since设为上次的 Last-Modified 的值的时间，服务器比较资源的最后修改时间
 
-**无法识别一秒内进行多次修改的情况**，某些服务器**不能精确的得到文件最后修改时间**
+**无法识别一秒内进行多次修改的情况**，某些服务器**不能精确的得到文件最后修改时间**，日期格式时区误差
 
-2请求头部中的 `If-None-Match` 字段与响应头部中的 `ETag`
+2响应头部中的 `ETag`，请求头部中的 `If-None-Match` 字段
 
 资源过期再次请求时，会将请求头 If-None-Match 值设置为上一次返回的 **Etag** 的值。服务器收到请求后进行比对本地的资源的 Etag 
 
@@ -61,7 +61,7 @@ expires 年月日类型 new date.toUTCString  删除 new date(1)
 
 **基于 cookie 实现的，session 存储在服务器端，sessionId 会被存储到客户端的cookie 中**，**使服务端有状态化，可以记录会话信息**
 
-也可放在url参数后面
+也可放在url参数后面，or自定义请求头
 
 第一次请求服务器的时候，服务器根据用户相关信息，创建对应的 Session,返回时将此唯一标识信息 SessionID 返回给浏览器。浏览器将SessionID 存入到 Cookie 中，同时 Cookie 记录此 SessionID 属于哪个域名。再次访问服务端会从 Cookie 中获取 SessionID， 查找对应的 Session 信息
 
@@ -165,17 +165,25 @@ clear();
 
 301 同样 308 不允许
 
-400语法错误 401未身份验证授权 403拒绝访问 404未找到（临时或永久） 410永久丢失  405禁止方法 409状态冲突（put的版本）
+400语法错误 401未身份验证授权 403拒绝访问 404未找到（临时或永久） 410永久丢失  405禁止方法 409状态冲突（put的版本）429请求次数更多频繁
 
 501方法不支持 502作为网关或代理服务器，收到的响应无效 503无法提供服务，超载维护 504无法规定时间获得响应
 
-# 1.0
+# get和post
 
-非持久连接  expires ifmodifiedsince
+get幂等，不影响服务器资源，一般会缓存
+
+get请求参数放入url中，不安全，post是请求体
+
+浏览器对 url 长度的限制，所以会影响 get 请求发送数据时的长度
+
+# http1.0
+
+无状态无连接，非持久连接  expires ifmodifiedsince
 
 # 1.1
 
-持久连接，使多个http请求复用同一个tcp，减少建立连接时延 range域 etag ifnonematch
+持久连接，使多个http请求复用同一个tcp，减少建立连接时延 range域 cachecontrol etag ifnonematch
 
 host域名  新增方法put options 报头必须文本 队头堵塞
 
@@ -219,7 +227,7 @@ hash防篡改》对称加密（加密密钥）》非对称加密（防中间人�
 
 **53号端口，同时使用TCP和UDP协议**  tcp区域传送，进行数据同步  域名解析udp        域名->ip
 
-本地》根》 》顶级》 》权威》本地（缓存） 迭代
+本地》根》 本地》顶级》 本地》权威》本地（缓存） 迭代
 
 # OSI
 
@@ -268,6 +276,8 @@ tcp/ip 应用（前3层）网络接口层（后2）
 
 ![image-20240519225346635](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240519225346635.png)
 
+报文最大生存时间
+
 粘包 延迟传送算法 (Nagle 算法), 在数据发送之前缓存他们. 如果短时间有多个数据发送, 会缓冲到⼀起作⼀次发送
 
 # websocket
@@ -276,7 +286,9 @@ tcp/ip 应用（前3层）网络接口层（后2）
 
 客户端向 WebSocket 服务器通知（notify）一个带有所有接收者ID（recipients IDs）的事件（event），服务器接收后立即通知所有活跃的（active）客户端，只有ID在接收者ID序列中的客户端才会处理这个事件。
 
-服务端![image-20240823101302073](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240823101302073.png)
+服务端
+
+![image-20240823101302073](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240823101302073.png)
 
 send和onmessage
 

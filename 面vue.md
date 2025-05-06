@@ -1,3 +1,19 @@
+# vue2和3区别
+
+响应式defineproperty proxy
+
+diff算法
+
+选项**Options**  组合**Composition** api
+
+setup语法糖
+
+store vuex pinia
+
+生命周期 
+
+打包webpack vite esbuild
+
 # 观察和发布订阅
 
 观察者 一个对象维护一个依赖列表，状态发生变化通知观察者
@@ -8,6 +24,8 @@
 观察者大多数同步(触发就通知)
 
 # 响应式原理
+
+数据》视图
 
 ```vue
 let data ;let vm={}
@@ -46,7 +64,7 @@ let p = new Proxy(person,{
 
 更符合规范，易于阅读  更安全，方法会返回一个布尔值，指示是否成功
 
-**Object.defineProperty** **直接修改原对象**,只能监听 **指定对象、指定属性** 的响应性,对返回的复杂数据类型进行循环监听，vue.set(对于新增，相当于主动触发了一次 Object.defineProperty)
+**Object.defineProperty** **直接修改原对象**,只能监听 **指定对象、指定属性** 的响应性,对返回的复杂数据类型进行循环监听，vue.$set(对于新增，相当于主动触发了一次 Object.defineProperty)
 
 **Proxy 可以直接监听对象的所有key** ，proxy实现的过程是在目标对象之前设置了一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写
 
@@ -63,18 +81,26 @@ let p = new Proxy(person,{
 
 ![image-20240520133014915](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240520133014915.png)
 
-vue.js 则是采用数据劫持结合发布者-订阅者模式的方式，通过`Object.defineProperty()`来劫持各个属性的`setter`，`getter`，在数据变动时发布消息给订阅者，触发相应的监听回调。
-
 mvvm双向绑定
 
-1数据监听器Observer，数据对象进行递归遍历监听，包括子属性对象的属性，都加上 setter和getter 这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化
-		2指令解析器Compile，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
-		3Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是:订阅并收到每个属性变动的通知，执行指令绑定的相应回调函数，从而更新视图
+vue.js 则是采用数据劫持结合发布者-订阅者模式的方式
+
+数据到视图
+
+通过`Object.defineProperty()`来劫持各个属性的`setter`，`getter`，在数据变动时发布消息给订阅者，触发相应的监听回调。
+
+1数据监听器Observer，数据对象进行递归遍历监听，包括子属性对象的属性，都加上 setter和getter 这样的话，给这个对象的某个值赋值，就会触发setter，那么就能监听到了数据变化。每个响应式属性对应一个 `Dep` 实例，负责管理依赖
+2指令解析器Compile，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
+3Watcher订阅者是Observer和Compile之间通信的桥梁，主要做的事情是:订阅并收到每个属性变动的通知，执行指令绑定的相应回调函数，从而更新视图
 (1)在自身实例化时往属性订阅器(dep)里面添加自己
 (2)自身必须有一个update()方法
 (3)待属性变动dep.notice()通知时，能调用自身的update()方法，并触发Compile中绑定的回调，则功成身退。
 
 4MVVM作为数据绑定的入口，整合Observer、Compile和Watcher三者，通过Observer来监听自己的model数据变化，通过Compile来解析编译模板指令，最终利用Watcher搭起Observer和Compile之间的通信桥梁，达到数据变化 -> 视图更新；视图交互变化(input) -> 数据model变更的双向绑定效果。
+
+视图到数据
+
+解析器将模板编译为渲染函数，解析指令vmodel，语法糖自动绑定value和 input。视图变化触发 DOM 事件，修改响应式数据。触发setter，通知watcher，更新视图
 
 ![image-20240620141715869](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240620141715869.png)
 
@@ -107,7 +133,7 @@ Vue的响应式系统实际上使用了异步更新队列，以提高性能。�
 
 
 
-vue2 defineproperty递归地遍历对象的每一层级所有属性，设置getter setter，嵌套的深层对象性能问题。数组方法重写（push pop），不支持 Set、Map 等复杂数据结构
+vue2 defineproperty递归地遍历对象的每一层级所有属性，设置getter setter，嵌套的深层对象性能问题。数组方法重写（push pop），不支持 Set、Map 等复杂数据结构。vue2改数组，用＄set
 
 vue3 `Proxy`可以监听对象的所有操作，不用深度遍历，只有在访问某些属性时才会进行响应式处理
 
@@ -138,7 +164,7 @@ vue3 `Proxy`可以监听对象的所有操作，不用深度遍历，只有在�
 new Promise(function(resolve) {
     console.log('promise1');//promise立即执行的
     resolve();//加入微任务
-    
+}    
 async function async1() {
     console.log('async1 start');//立即执行
     await async2();//async2执行完后返回一个promise要等，，后面加入微任务
@@ -153,11 +179,11 @@ async function async2() {//async返回一个promise
 
 # vdom diff hand
 
- vue2双端 Diff 对比，vue3快速diff
+vue2双端 Diff 对比，vue3快速diff
 
 vdom是JS模拟的DOM结构，将DOM的比对操作放在JS层，减少浏览器不必要的重绘，提高效率。性能不是绝对更好
 
-diff同层比较 O（n）
+diff同层比较  从n3（对比需要n2，更改需要n）到O（n）
 
 **sameVnode**
 
@@ -169,7 +195,7 @@ diff同层比较 O（n）
 function sameVnode(a, b) {    
     return (
         //key 属性, tag 属性是否相等, 是否是input 节点
-        //!! 是一个逻辑运算符，用于将值转换为布尔类型。data 属性是否都存在或都不存在,data可以不同
+        //!! 是一个逻辑运算符，用于将值转换为布尔类型。data 属性是否都存在或都不存在,data可以不同  ??如果为null或undefined时返回个默认值
         a.key === b.key &&
         a.tag === b.tag &&
         !!a.data === !!b.data &&
@@ -247,12 +273,14 @@ parentNode.removeChild(el);
     );
 ```
 
-**vue3在diff算法中相比vue2增加了静态标记**, 其作用是为了**会发生变化的地方添加一个flag标记**，下次发生变化的时候直接找该地方进行比较,提高性能
+**vue3在diff算法中相比vue2增加了静态标记**, 其作用是为了**会发生变化的地方添加一个flag标记**，下次发生变化的时候直接找该地方进行比较,提高性能  (？不变的加标记，跳过处理
 
-300最长递增子序列，不连续，hand
+避免每次渲染时重复创建静态节点（无动态绑定的节点）
+
+300最长递增子序列lis，不连续，hand
 
 ```
-dp初始1，每轮[0,i),if numi>numj,max(dp[i], dp[j] + 1)，记录开始位置
+dp初始1，每轮[0,i),if numj<numi递增,dp=max(dp[i], dp[j] + 1)，记录开始位置
 ```
 
 vue3对新旧子节点的预处理过程。
@@ -264,6 +292,12 @@ vue3对新旧子节点的预处理过程。
    - `i > newEnd && i <= oldEnd`：说明 `i` 至 `oldEnd` 这个区间内的节点都需要被卸载；
    - 其他情况，快速diff
 
+？也会比较**头尾相同**
+
+乱序处理，扫描旧的，保存对应旧的索引，求lis。逆序处理新的非lis的dom
+
+例如C, D, E, A, B减少次数，更明显3 4 ... 999 1 2
+
 先建数组source初始-1，存储**新子节点在旧子节点中的位置索引**。对新的索引表keyToIndex ={key:index},遍历旧的，看k=keyToIndex[oldVnode.key]，没有就卸载，有patch再更新source，记录已经patch的数量，>=新节点时后面旧的就删除。比较k和pos，如果 k < pos，说明需要移动节点mov=true， 否则更新 pos 的值为k
 
 如果k一直递增，就不需要移动任何节点
@@ -272,7 +306,10 @@ vue3对新旧子节点的预处理过程。
 
 ![image-20240620154021138](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240620154021138.png)
 
+#### **区块树（Block Tree）优化**
 
+- **动态节点标记**：在编译阶段标记动态节点（如含 `v-if`、`v-for` 的节点）。
+- **优化效果**：父节点变化时，若子区块稳定（无动态结构），跳过子树的 Diff 过程。减少不必要的子树遍历。
 
 
 
@@ -288,7 +325,7 @@ proxy监听整个对象，惰性监听。 Proxy 并不能监听到内部深层�
 
 vue2数组进行 push 添加新元素时，需要针对于该元素再调用 Object.defineProperty 进行劫持操作实现响应式，并通知更新，所以需要扩展原有的 push 方法
 
-vue3当使用 `Proxy` 对象来创建响应式数组时，如果数组中的元素是引用类型（例如对象或数组），代理对象会生成新的代理，而不是直接返回原始引用。这会影响数组查找操作（如 `indexOf`、`includes` 等），因为这些操作依赖于引用相等性。const obj = { id: 1 }; const reactiveArray = reactive([obj]);reactiveArray 中存的是一个onj的proxy代理对象，不是直接引用。调用includes(obj)会去相等性寻找，遇到代理对象，而不是 `obj` 本身，就失败了。
+vue3当使用 `Proxy` 对象来创建响应式数组时，如果数组中的元素是引用类型（例如对象或数组），代理对象会生成新的代理，而不是直接返回原始引用。这会影响数组查找操作（如 `indexOf`、`includes` 等），因为这些操作依赖于引用相等性。const obj = { id: 1 }; const reactiveArray = reactive([obj]);reactiveArray 中存的是一个obj的proxy代理对象，不是直接引用。调用includes(obj)会去相等性寻找，遇到代理对象，而不是 `obj` 本身，就失败了。
 
 Vue 3 重写了数组的这些查找方法。代理后的数组中查找不到元素时，会在原始数组中再进行一次查找。两次查找
 
@@ -308,7 +345,13 @@ Loading效果能很好的加强用户体验，避免重复请求,采用ElLoading
 
 封装
 
+# token过期
 
+axios response拦截器判断返回401，用refreshtoken重新请求accesstoken，存到本地，再重新请求
+
+# v8的jit即时编译
+
+默认是解释执行，启动快。代码多次执行，jit编译器介入编译成机器语言。不牺牲启动速度的情况下，提供接近编译语言的运行速度
 
 # vite
 
@@ -436,6 +479,13 @@ hmr 要把该模块的相关依赖模块也全部编译一次
 
 vite 启动开发服务器，不打包，使用浏览器原生 ES 模块导入。按需编译文件，只在浏览器请求时处理。esbuild
 
+模块加载时，先检查缓存。如果同一个加载多次，只执行一次，缓存
+split chunks拆分
+异步懒加载chunk
+loader接收前一个loader的返回值为参数
+plugin扩展器，可以监听打包过程的某些节点事件
+运行流程 初始化参数，遍历entry入口，loader编译，输出文件
+
 
 
 # 生命周期
@@ -491,7 +541,7 @@ watch只能监视以下**四种数据**：
 let st=watch(,()=>{}); st()
 ```
 
-watchEffect立即执行 ` 不用明确指出监视的数据（函数中用到哪些属性，那就监视哪些属性）只要这些响应数据发生变化，就会触发 `watchEffect
+watchEffect立即执行   不用明确指出监视的数据（函数中用到哪些属性，那就监视哪些属性）只要这些响应数据发生变化，就会触发 watchEffect
 
 # 组件通信
 
@@ -595,7 +645,7 @@ defineEmits(['update:firstName', 'update:lastName'])
 
 # 事件委托
 
-事件委托适合 动态生成的元素，需要动态绑定事件。
+事件委托适合 动态生成的元素，需要动态绑定事件的。
 
 缺点： 大量元素，事件多会占用内存性能。一类元素事件可统一绑定
 
@@ -642,9 +692,11 @@ return {
 hash原理：  js会感知到url的变化，通过这一点可以用js监听url中hash值的变化,通过onhashchange事件,由于哈希值的变换并不会引发页面的刷新和跳转,当监听到hash变化,就可以动态的切换组件,就可以实现无刷新切换页面技术
 
 优点 页面每次切换跳转时只是单纯的组件和视图的切换，并不需要做html文件的请求，这样就节约了很多http发送时延，我们在切换页面的时候速度很快。
-     页面片段间的切换快，包括移动设备, 尤其是在网络环境差的时候, 因为组件已经预先加载好了, 并不需要发送网络请求, 所以用户体验好
+页面片段间的切换快，包括移动设备, 尤其是在网络环境差的时候, 因为组件已经预先加载好了, 并不需要发送网络请求, 所以用户体验好
 
 缺点 首屏加载速度慢 不易于SEO  首屏时会把所有的页面用到的资源都加载一遍
+
+seo 需要读取页面上的h1h2之类的。spa vue是基于js实时挂载到app上的，页面本质上是空的，不利于seo。ssr 代价大，全部转换
 
 vue提供服务器端渲染技术(SSR)来解决
 
@@ -689,9 +741,9 @@ vue提供服务器端渲染技术(SSR)来解决
 
 `query`是path和name都可以正常传参的,有没有path都可以进行传参
 
-**params参数都不会显示在url地址栏中**.除了在路由中通过routes进行配置的.所以用户**刷新页面后,params参数就会丢失!**
+**params参数都不会显示在url地址栏中**.除了在路由中通过routes进行配置的.所以用户**刷新页面后,params参数就会丢失!**            /user/123
 
- **query参数可以正常显示在url地址栏中**.刷新页面后也不会丢失
+ **query参数可以正常显示在url地址栏中**.刷新页面后也不会丢失    abc.com/products?category=phone&page=2
 
 ### 导航守卫
 
@@ -770,3 +822,6 @@ const emit = defineEmits(['childEvent'])
 
 ```
 
+# 样式隔离
+
+style scoped  属性选择器 div[data-v-451232]
