@@ -45,3 +45,41 @@ let input = {
 
 //   return flatten(input, depth);
 // };
+//迭代方式，防止栈溢出
+function flattenInfinity(arr) {
+  const stack = [...arr];
+  const result = [];
+
+  while (stack.length) {
+    const item = stack.pop();
+    if (Array.isArray(item)) {
+      stack.push(...item.reverse()); // 反向压栈保证顺序
+    } else {
+      result.push(item);
+    }
+  }
+
+  return result.reverse(); // 恢复原顺序
+}
+function flatIterative(arr, depth = 1) {
+  const stack = [...arr.map((item) => ({ value: item, depth }))];
+  const result = [];
+
+  while (stack.length) {
+    const { value, depth } = stack.pop();
+
+    if (Array.isArray(value) && depth > 0) {
+      // 反向压栈并传递递减后的深度
+      stack.push(
+        ...value.reverse().map((child) => ({
+          value: child,
+          depth: depth - 1,
+        }))
+      );
+    } else {
+      result.push(value);
+    }
+  }
+
+  return result.reverse();
+}
