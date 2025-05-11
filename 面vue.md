@@ -30,7 +30,7 @@ store vuex pinia
 ```vue
 let data ;let vm={}
 Object.defineProperty(vm,data,{
-get(){}
+get(){},
 set(){}
 })
 ```
@@ -40,9 +40,9 @@ let data= {
         name: '张三',
     }
 let p=new Proxy(data,{
-get(){}
+get(){},
 set(){}
-)
+})
 ```
 
 ```
@@ -347,7 +347,7 @@ Loading效果能很好的加强用户体验，避免重复请求,采用ElLoading
 
 # token过期
 
-axios response拦截器判断返回401，用refreshtoken重新请求accesstoken，存到本地，再重新请求
+axios response拦截器判断返回401，用refreshtoken重新请求accesstoken，失败跳login，存到本地，再重新请求。本地也可判断失效超时重试，axios的response error里判断。没有config，重试次数，reject，去login。没超过次数，重试，.then instance(config)
 
 # v8的jit即时编译
 
@@ -496,7 +496,7 @@ plugin扩展器，可以监听打包过程的某些节点事件
 
 **beforeMount**在挂载开始之前被调用，相关的 `render` 函数首次被调用，`$el` 依旧还不能用。**onBeforeMount**相同
 
-**mounted**在实例挂载完成后被调用，这个时候 `$el` 能使用，但是这个阶段不能保证所有的子组件都挂载完成，如果你希望等待整个视图渲染完毕，可以使用 `$nextTick`。**onMounted**相同
+**mounted**在实例挂载完成后被调用，这个时候 `$el` 能使用，但是这个阶段不能保证所有的子组件都挂载完成，如果你希望等待整个视图渲染完毕，可以使用 `$nextTick`（下一次dom更新）。**onMounted**相同
 
 **beforeUpdate**在数据发生改变后，DOM 被更新之前被调用（使用该钩子要注意死循环）。**onBeforeUpdate**相同
 
@@ -509,6 +509,8 @@ plugin扩展器，可以监听打包过程的某些节点事件
 # ref reactive 
 
 核心都是监听 setter 和 getter ，然后触发 effect 的方式
+
+proxy es6引入，创建对对象的代理，不支持基本数据类型。转成包装类{value：}处理，类似String
 
 reactive 通过 proxy 进行的响应式实现，监听复杂数据类型的 getter 和 setter 行为，getter收集当前的依赖行为effect，与这个属性关联起来，setter触发所有依赖effect，更新视图。但是 proxy 只能监听复杂数据类型，没有办法监听简单数据类型
 
@@ -729,7 +731,7 @@ vue提供服务器端渲染技术(SSR)来解决
 
 **router-link：** 创建链接 其本质是`a`标签，这使得 Vue Router 可以在不重新加载页面的情况下更改 URL，处理 URL 的生成以及编码。
 
-**router-view：**显示与 url 对应的组件。
+先 **router-view：**显示与 url 对应的组件。
 
 **路由懒加载**(动态加载路由) component:() => **import**
 
@@ -743,7 +745,7 @@ vue提供服务器端渲染技术(SSR)来解决
 
 **params参数都不会显示在url地址栏中**.除了在路由中通过routes进行配置的.所以用户**刷新页面后,params参数就会丢失!**            /user/123
 
- **query参数可以正常显示在url地址栏中**.刷新页面后也不会丢失    abc.com/products?category=phone&page=2
+**query参数可以正常显示在url地址栏中**.刷新页面后也不会丢失    abc.com/products?category=phone&page=2
 
 ### 导航守卫
 

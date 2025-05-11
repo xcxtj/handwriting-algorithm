@@ -41,3 +41,4 @@ render树中包含节点和样式（只有需要显示的） 比如识别display
 重绘 
 
 js操作css要有完整cssom，浏览器会先下载和构建CSSOM，然后再执行JavaScript，最后在继续构建DOM。阻塞dom解析
+

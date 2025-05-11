@@ -37,7 +37,7 @@ class LRUcache {
     node.next.pre = node;
   }
   put(key, value) {
-    let node = this.getnode(key);//放在最前面
+    let node = this.getnode(key); //放在最前面
     if (node) {
       node.value = value;
       return;

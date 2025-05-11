@@ -22,19 +22,20 @@ instance.interceptors.response.use(
       originalRequest._retry ||
       !localStorage.getItem("token")
     ) {
-      return Promise.reject(error);
+      return Promise.reject(error); //都可以跳login
     }
     originalRequest._retry = true;
     if (!isrefreshing) {
+      //上锁
       isrefreshing = true;
       try {
         const response = await axios.post("https://api.openai.com/v1/refresh", {
           token: localStorage.getItem("token"),
-        });
+        }); //请求refresh token
         localStorage.setItem("token", response.data.token);
         failedQueue.forEach((cb) => cb());
         failedQueue = [];
-        return instance(originalRequest);
+        return instance(originalRequest); //重新请求原来的接口
       } catch (err) {
         localStorage.removeItem("token");
         window.location.href = "/login";

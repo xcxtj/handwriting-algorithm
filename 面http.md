@@ -81,7 +81,7 @@ uid time sign(哈希)
 
 refresh token 存在服务端
 
-access token有效期比较短，过期后用 refresh token 去更新 access token，避免重输密码
+access token有效期比较短，主要后端判断过期，过期后用 refresh token 去更新 access token，避免重输密码
 
 **要用户数据和第三方共享，或者允许第三方调用 API 接口，用 Token**
 
@@ -173,7 +173,7 @@ clear();
 
 get幂等，不影响服务器资源，一般会缓存
 
-get请求参数放入url中，不安全，post是请求体
+get请求参数放入url中，不安全，post是放入请求体
 
 浏览器对 url 长度的限制，所以会影响 get 请求发送数据时的长度
 

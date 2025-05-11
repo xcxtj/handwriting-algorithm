@@ -140,6 +140,8 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 3左float left 右float right 都设宽 中间margin
 ```
 
+
+
 ```
 圣杯
 ！！！html中标签顺序中左右
@@ -148,6 +150,8 @@ img.offsetTop < window.innerHeight + document.body.scrollTop;
 左relative marginleft-100% left为-自己宽  
 右relative maginleft-自己（-100%也可以？） right-自己
 ```
+
+
 
 ```
 双飞翼（center里面是中）
