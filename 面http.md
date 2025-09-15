@@ -79,9 +79,11 @@ uid time sign(哈希)
 
 **服务端无状态的认证方式，服务端不用存放 token 数据，不会存储会话信息** **用解析 token 的计算时间换取 session 的存储空间**可以跨域 查询数据库获取用户信息
 
-refresh token 存在服务端
+refresh token 存在服务端，后端安全存储，禁止前端暴露
 
 access token有效期比较短，主要后端判断过期，过期后用 refresh token 去更新 access token，避免重输密码
+
+refresh token 推荐存储在 HttpOnly Cookie 。https保证安全。后端通过httponly cookie直接下发，之后浏览器会自动携带这个httponly cookie
 
 **要用户数据和第三方共享，或者允许第三方调用 API 接口，用 Token**
 
@@ -133,9 +135,9 @@ Cookie 的 domain 属性设置为父域的域名（主域名）,path 属性设�
 
 部署一个认证中心，认证中心就是一个专门负责处理登录请求的独立的 Web 服务
 
-在认证中心登录成功后，认证中心记录用户的登录状态，并将 Token 写入 Cookie。（注意 Cookie 是认证中心的）
+在认证中心登录成功后，认证中心记录用户的登录状态，并将 Token 写入 Cookie。（注意 Cookie 是认证中心的）临时token发给客户
 
-进入，应用系统检查当前请求有没有 Token，没有，跳转至认证中心进行登录。会带上认证中心的 Cookie ，认证中心判断是否登录。已经登录过了，跳转回目标 URL ，拼接一个生成的 Token，返回目标应用系统。
+（服务端检查是否是之前的重定向用户，防csrf）进入，应用系统检查当前请求有没有 临时Token，没有，跳转至认证中心进行登录。会带上认证中心的 Cookie ，认证中心判断是否登录。已经登录过了，跳转回目标 URL ，拼接一个生成的 Token，返回目标应用系统。
 
 应用系统拿到 Token 之后，还需要向认证中心确认下 Token 的合法性。记录用户的登录状态，并将 Token 写入 Cookie（这个 Cookie 是当前应用系统的）再次访问当前应用系统时，就会自动带上这个 Token
 
@@ -245,7 +247,7 @@ hash防篡改》对称加密（加密密钥）》非对称加密（防中间人�
 
 物理 
 
-tcp/ip 应用（前3层）网络接口层（后2）
+tcp/ip 应用（前3层）传输 网络 网络接口层（后2）
 
 ![image-20240605164832706](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240605164832706.png)
 
@@ -276,7 +278,7 @@ tcp/ip 应用（前3层）网络接口层（后2）
 
 ![image-20240519225346635](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20240519225346635.png)
 
-报文最大生存时间
+报文最大生存时间MSL
 
 粘包 延迟传送算法 (Nagle 算法), 在数据发送之前缓存他们. 如果短时间有多个数据发送, 会缓冲到⼀起作⼀次发送
 

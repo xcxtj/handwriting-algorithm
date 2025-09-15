@@ -10,7 +10,7 @@ setup语法糖
 
 store vuex pinia
 
-生命周期 
+生命周期
 
 打包webpack vite esbuild
 
@@ -333,9 +333,9 @@ Vue 3 重写了数组的这些查找方法。代理后的数组中查找不到�
 
 # axios hand
 
-拦截器
+拦截器 需要设置多个
 
-请求拦截：[axios请求](https://so.csdn.net/so/search?q=axios请求&spm=1001.2101.3001.7020)拦截会先执行最后指定的回调函数，依次向前面执行，先进后出
+请求拦截：axios请求拦截会先执行最后指定的回调函数，依次向前面执行，先进后出
 
 响应拦截：axios响应拦截会先执行最先指定的回调函数，依次向后面执行，先进先出
 
@@ -347,7 +347,9 @@ Loading效果能很好的加强用户体验，避免重复请求,采用ElLoading
 
 # token过期
 
-axios response拦截器判断返回401，用refreshtoken重新请求accesstoken，失败跳login，存到本地，再重新请求。本地也可判断失效超时重试，axios的response error里判断。没有config，重试次数，reject，去login。没超过次数，重试，.then instance(config)
+axios response拦截器判断返回401，用refreshtoken重新请求accesstoken，失败跳login，存到本地，再重新请求。本地不建议判断失效超时重试，axios的response error里判断。没有config，重试次数，reject，去login。没超过次数，重试，.then instance(config)
+
+服务器返回的 Cookie 满足条件（domain，path，有效等），浏览器就会在后续请求中**自动携带**（包括httponly的）
 
 # v8的jit即时编译
 
@@ -496,7 +498,7 @@ plugin扩展器，可以监听打包过程的某些节点事件
 
 **beforeMount**在挂载开始之前被调用，相关的 `render` 函数首次被调用，`$el` 依旧还不能用。**onBeforeMount**相同
 
-**mounted**在实例挂载完成后被调用，这个时候 `$el` 能使用，但是这个阶段不能保证所有的子组件都挂载完成，如果你希望等待整个视图渲染完毕，可以使用 `$nextTick`（下一次dom更新）。**onMounted**相同
+**mounted**在实例挂载完成后被调用，这个时候 `$el` 能使用，但是这个阶段不能保证所有的子组件都挂载完成，如果你希望等待整个视图渲染完毕，可以使用 `$nextTick`（下一次dom更新。修改了响应式数据后，Vue 不会立即更新 DOM，而是等待本轮更新周期结束后批量更新）。**onMounted**相同
 
 **beforeUpdate**在数据发生改变后，DOM 被更新之前被调用（使用该钩子要注意死循环）。**onBeforeUpdate**相同
 
@@ -545,7 +547,7 @@ let st=watch(,()=>{}); st()
 
 watchEffect立即执行   不用明确指出监视的数据（函数中用到哪些属性，那就监视哪些属性）只要这些响应数据发生变化，就会触发 watchEffect
 
-# 组件通信
+# 组件通信 
 
 vue2和3对比：移出事件总线，使用`mitt`代替。vuex`换成了`pinia`。把`.sync`优化到了`v-model`里面了。把`$listeners`所有的东西，合并到`$attrs`中了。 `$children`被砍掉了
 
@@ -698,7 +700,7 @@ hash原理：  js会感知到url的变化，通过这一点可以用js监听url�
 
 缺点 首屏加载速度慢 不易于SEO  首屏时会把所有的页面用到的资源都加载一遍
 
-seo 需要读取页面上的h1h2之类的。spa vue是基于js实时挂载到app上的，页面本质上是空的，不利于seo。ssr 代价大，全部转换
+seo 需要读取页面上的h1h2之类的。spa vue是基于js实时挂载到app上的，页面本质上是空的，不利于seo。ssr 代价大，全部转换    <div id="app"></div>
 
 vue提供服务器端渲染技术(SSR)来解决
 

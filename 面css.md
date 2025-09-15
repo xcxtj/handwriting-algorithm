@@ -66,7 +66,7 @@ transform:translate
 
 # 4优先级
 
-!important>内联>id>类 伪类 属性>标签 伪元素
+! important>内联>id>类 伪类 属性>标签 伪元素
 
 伪类:hover :focus :nth-child(n) 伪元素::before  ::after  属性[type='radio'] [href=xxx]
 
@@ -83,6 +83,8 @@ transform:translate
 ie/怪异box-sizing: border-box
 
 标准box-sizing: content-box
+
+![image-20250913182602885](C:\Users\XTJ\AppData\Roaming\Typora\typora-user-images\image-20250913182602885.png)
 
 # 7c3
 

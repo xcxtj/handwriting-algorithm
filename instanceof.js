@@ -1,4 +1,4 @@
-function myinstance(l, r) {
+function myinstance(l, r) {//a isntanceof b
   let proto = Object.getPrototypeOf(l),
     pro = r.prototype;
   while (true) {

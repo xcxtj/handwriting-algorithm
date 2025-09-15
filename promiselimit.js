@@ -38,3 +38,43 @@ addtask(500, 2);
 addtask(300, 3);
 addtask(400, 4);
 schedule.taskstart(); // 启动调度器
+
+function mylimit(tasks, limit = 6) {
+  return new Promise((resolve) => {
+    let index = 0,
+      running = 0,
+      res = [];
+    function runNext() {
+      if (index >= tasks.length && running === 0) {
+        resolve(res);
+        return;
+      }
+      while (running < limit && index < tasks.length) {
+        let taskIndex = index;
+        index++;
+        running++;
+        tasks[taskIndex]()
+          .then((result) => {
+            res[taskIndex] = result;
+          })
+          .catch((err) => {
+            res[taskIndex] = err;
+          })
+          .finally(() => {
+            running--;
+            runNext();
+          });
+      }
+    }
+    runNext()
+  });
+}
+
+// 测试所有实现
+const timeouts = (time) => new Promise((resolve) => setTimeout(resolve, time));
+const tasks = [
+  () => timeouts(1000).then(() => console.log(1)),
+  () => timeouts(500).then(() => console.log(2)),
+  () => timeouts(300).then(() => console.log(3)),
+  () => timeouts(400).then(() => console.log(4)),
+];

@@ -57,3 +57,4 @@ Function.prototype.myApply = function (context) {
   delete context[key];
   return result;
 };
+//const count2 = addGrades.myApply(student, ['英语', 88, 91]);

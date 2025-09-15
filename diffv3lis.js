@@ -16,6 +16,7 @@ function lis(nums) {
       end = i;
     }
   }
+  //求长度，返回dp中的max
   // 根据prev数组回溯构建最长递增子序列
   let lis = [],
     cur = end;

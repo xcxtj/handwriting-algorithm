@@ -8,11 +8,11 @@ Number.EPSILON 2的-52，比较：
 
 Number.EPSILON-(0.1+0.2-0.3)<Number.EPSILON
 
-typeof null是object，nan是number 低地址
+typeof null是object，NaN是number 低地址
 
 false：  undefined，null,0，0+，0-，nan，''
 
-Object.is(a,b)在===上优化，-0 和 +0 不再相等，两个 NaN 是相等的
+Object.is(a,b)在===上优化，之后-0 和 +0 不再相等，两个 NaN 是相等的
 
 .map:filter:slice concat flat返回新数组
 
@@ -115,7 +115,7 @@ this执行上下文中的一个属性，它指向最后一次调用这个方法�
 
 **call(thisArg, arg1, arg2, ...)**立即执行
 
-**apply(thisArg, [argsArray])**包含参数的数组或类数组，立即执行
+**apply(thisArg, [argsArray])**一个包含参数的数组或类数组，立即执行
 
 ```
 Math.max.apply(null,arr)或者Math.max(...arr)
@@ -145,7 +145,7 @@ for of遍历iterable对象的值（要有迭代器，Object.entries()）输出�
 
 # 8ES6
 
-let const 解构 模板字符串  字符串（includes startswith endswith repeat）
+let const 解构 ... 模板字符串  字符串（includes startswith endswith repeat）
 
 # 9变量提升
 
@@ -183,7 +183,7 @@ allsetteled，any
 
 
 
-try catch不能异步捕获错误，采用settimeout,promise链等
+try catch不能异步捕获错误(`try/catch` 只能监控当前执行栈中的错误，事件循环中的不行，`try/catch` 执行结束了)，应该采用settimeout,promise链等。错误：try里面settimeout，正确：settimeout里面try
 
 foreach不会等待异步结束，用for
 
@@ -193,7 +193,7 @@ foreach不会等待异步结束，用for
 
 # 数据防篡改 
 
-object.freeze不能新增修改删除，深层嵌套，seal只是可以修改，不会深层，proxy set里面抛error
+object.freeze不能新增修改删除，深层嵌套，seal只是可以修改，不会深层，实现：proxy set里面抛error
 
 
 
